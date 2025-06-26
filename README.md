@@ -1,7 +1,7 @@
 # AI Learning Platform
 
 A full-stack web application for managing users, courses, and AI-powered learning content.
-
+ ℹ️ For a detailed explanation of my project approach and design decisions, see [`BRIEF_NOTE.md`]
 ---
 
 ## 🚀 Technologies Used
