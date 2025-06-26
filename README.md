@@ -1,70 +1,159 @@
-# Getting Started with Create React App
+# AI Learning Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for managing users, courses, and AI-powered learning content.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Technologies Used
 
-### `npm start`
+- **Frontend:** React (with Hooks, functional components, Axios/Fetch)
+- **Backend:** ASP.NET Core Web API (C#)
+- **Database:** SQL Server (can be run via Docker Compose)
+- **AI Service:** OpenAI API (GPT-4)
+- **Configuration:** dotenv (`.env`) for environment variables
+- **Containerization:** Docker, Docker Compose
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📝 Assumptions Made
 
-### `npm test`
+- The backend will be run locally or in a Docker container; frontend and backend can communicate over localhost.
+- The OpenAI API key will be provided by the developer via environment variable or `.env` file.
+- The SQL Server database will be created and managed via Docker Compose for ease of local setup.
+- CORS is properly configured on the backend to allow the frontend to access APIs.
+- Proper error handling and input validation are implemented both client and server side.
+- **User authentication is required to view courses and learning history; user data is private and cannot be accessed by others.**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🛠️ Setup Instructions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Clone the repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/RivkyHoff/LearningPlatform.git
+cd ai-learning-platform
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Environment Variables
 
-### `npm run eject`
+Copy the `.env.example` file to `.env` and fill in your secrets:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+cp .env.example .env
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Edit `.env` as needed.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 3. Run the Database with Docker Compose
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Ensure Docker is installed and running.
 
-## Learn More
+```bash
+docker-compose up -d
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This will spin up a SQL Server instance and any other required services.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 4. Backend Setup
 
-### Code Splitting
+- Navigate to the backend folder (e.g., `cd server`).
+- Restore dependencies and run migrations if needed.
+- Start the API:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+dotnet restore
+dotnet ef database update  
+dotnet run
+```
 
-### Analyzing the Bundle Size
+### 5. Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Navigate to the frontend folder (e.g., `cd client`).
+- Install dependencies and start the development server:
 
-### Making a Progressive Web App
+```bash
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Open [http://localhost:3001](http://localhost:3001) (or as configured) in your browser.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🏗️ How to Run Locally
 
-### Deployment
+1. **Start the database** via Docker Compose:  
+   `docker-compose up -d`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. **Start the backend** API (default: `https://localhost:7099`):  
+   `dotnet run` (inside the backend folder)
 
-### `npm run build` fails to minify
+3. **Start the frontend** React app (default: `http://localhost:3001`):  
+   `npm start` (inside the frontend folder)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. **Test endpoints** via Swagger (`https://localhost:7099/swagger`) or from the frontend UI.
+
+---
+
+## 🧪 Sample `.env` Example
+
+```dotenv name=.env.example
+# Frontend
+REACT_APP_API_URL=http://localhost:7099
+
+# Backend
+OPENAI_API_KEY=your-openai-api-key-here
+DB_CONNECTION_STRING=Server=localhost,1433;Database=AILearning;User Id=sa;Password=yourStrong(!)Password;
+
+```
+
+---
+
+## 🐳 Docker / Docker Compose Example
+
+```yaml name=docker-compose.yml
+version: '3.8'
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "yourStrong(!)Password" i don't want to share passwords here!
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssqldata:/var/opt/mssql
+volumes:
+  mssqldata:
+```
+
+---
+
+## 💡 Best Practices
+
+- Code is modular, well-commented, and follows established conventions for both C# and React.
+- Sensitive configuration is managed via dotenv and not committed to version control.
+- Input validation is performed on both frontend and backend.
+- API errors are caught and user-friendly messages are displayed.
+- The public repository includes a clear, linear commit history and no sensitive data.
+- **Authentication is enforced for all protected resources; only authenticated users can view their own courses and learning history.**
+
+---
+
+## 📋 Input Validation & Error Handling
+
+- All API endpoints validate input and return appropriate error messages and HTTP status codes.
+- The frontend checks required fields and displays errors to the user.
+- Duplicate registrations (e.g., same username) are prevented, and user data is updated safely.
+- Async operations in both frontend and backend use try/catch blocks for robust error handling.
+---
+
+## 📚 Further Notes
+
+- To contribute, fork the repo and submit a pull request with clear, concise commit messages.
+- For production deployments, ensure secrets are stored securely (not in `.env`) and HTTPS is enforced.
+
+---
+
+**Happy Learning!**
