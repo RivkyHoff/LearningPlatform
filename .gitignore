@@ -1,0 +1,11 @@
+# User-specific files
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# Environment files
+.env
