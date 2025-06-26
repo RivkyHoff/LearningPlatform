@@ -156,4 +156,4 @@ volumes:
 
 ---
 
-**Happy Learning!**
+**Enjoy my app!**
