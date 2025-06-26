@@ -13,7 +13,6 @@ namespace Bl.Services
     public class OpenAiService
     {
         private readonly HttpClient _httpClient;
-        // Here was openAiKey
 
         private readonly string _apiKey;
 
@@ -22,12 +21,6 @@ namespace Bl.Services
             _httpClient = httpClient;
             _apiKey = configuration["OpenAI:ApiKey"];
         }
-
-
-        //public OpenAiService(HttpClient httpClient)
-        //{
-        //    _httpClient = httpClient;
-        //}
 
         public async Task<string> GetLessonFromOpenAiAsync(string category, string subCategory)
         {
